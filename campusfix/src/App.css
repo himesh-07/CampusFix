@@ -393,14 +393,14 @@ textarea {
   background: var(--grad-btn);
   background-size: 150% 100%;
   background-position: 0 0;
-  box-shadow: 0 8px 20px -4px rgba(14, 124, 134, 0.45);
+  box-shadow: 0 8px 20px -4px rgba(28, 236, 255, 0.45);
   transition: background-position 0.35s, transform 0.15s, box-shadow 0.2s, opacity 0.2s;
 }
 
 .btn-primary:hover:not(:disabled) {
   background-position: 100% 0;
   transform: translateY(-1.5px);
-  box-shadow: 0 12px 24px -4px rgba(14, 124, 134, 0.55);
+  box-shadow: 0 12px 24px -4px rgba(18, 131, 141, 0.55);
 }
 
 .btn-primary:active:not(:disabled) {
@@ -472,7 +472,7 @@ button:focus-visible {
   gap: 8px;
   background: var(--resolved-bg);
   color: var(--resolved-fg);
-  border: 1px solid #a7f3d0;
+  border: 1px solid #00ff88;
 }
 
 .alert.error {
