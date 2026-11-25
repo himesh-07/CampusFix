@@ -5,7 +5,11 @@ const API = (import.meta.env.VITE_API_URL || "").trim().replace(/\/+$/, "");
 
 const CATEGORIES = ["Electrical", "Wi-Fi", "Furniture", "Washroom", "Other"];
 const FILTERS = ["All", "Pending", "In Progress", "Resolved"];
-
+function normalizeStatus(status) {
+  return status === "Reported" || !status
+    ? "Pending"
+    : status;
+}
 const EMPTY_FORM = {
   building: "",
   room: "",
@@ -290,7 +294,7 @@ function ComplaintCard({ complaint, onUpdate, updating }) {
   const [resolving, setResolving] = useState(false);
   const [noteInput, setNoteInput] = useState("");
 
-  const currentStatus = status || "Pending";
+  const currentStatus = normalizeStatus(status);
   const statusSlug = currentStatus.replace(/\s+/g, "-").toLowerCase();
   const categorySlug = (category || "Other").toLowerCase();
 
@@ -581,19 +585,24 @@ export default function App() {
     }
   }
 
-  const counts = useMemo(() => {
-    const result = {
-      All: complaints.length
-    };
+ const counts = useMemo(() => {
+  const result = {
+    All: complaints.length,
+    Pending: 0,
+    "In Progress": 0,
+    Resolved: 0
+  };
 
-    FILTERS.slice(1).forEach((status) => {
-      result[status] = complaints.filter(
-        (complaint) => (complaint.status || "Pending") === status
-      ).length;
-    });
+  complaints.forEach((complaint) => {
+    const status = normalizeStatus(complaint.status);
 
-    return result;
-  }, [complaints]);
+    if (result[status] !== undefined) {
+      result[status]++;
+    }
+  });
+
+  return result;
+}, [complaints]);
 
   const visible = useMemo(() => {
     const query = search.trim().toLowerCase();
